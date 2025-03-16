@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Курс копірайтингу: Самостійне написання статей</title>
+  <style>
+    /* Загальні стилі */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+      color: #333;
+    }
+    p {
+      color: #444;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    /* Таймлайн */
+    .timeline {
+      position: relative;
+      padding: 50px 0;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: #dfe6e9;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -2px;
+    }
+    .timeline-item {
+      padding: 20px 30px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border: 4px solid #00b894;
+      border-radius: 50%;
+      top: 30px;
+      z-index: 1;
+    }
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+    .timeline-item.left::after {
+      right: -12px;
+    }
+    .timeline-item.left::before {
+      content: "";
+      position: absolute;
+      top: 38px;
+      right: -14px;
+      border: medium solid #00b894;
+      border-width: 10px 0 10px 10px;
+      border-color: transparent transparent transparent #00b894;
+      z-index: 1;
+    }
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+    .timeline-item.right::after {
+      left: -12px;
+    }
+    .timeline-item.right::before {
+      content: "";
+      position: absolute;
+      top: 38px;
+      left: -14px;
+      border: medium solid #00b894;
+      border-width: 10px 10px 10px 0;
+      border-color: transparent #00b894 transparent transparent;
+      z-index: 1;
+    }
+    .timeline-content {
+      background-color: #fff;
+      padding: 20px;
+      position: relative;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .timeline-content h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      color: #333;
+    }
+    .timeline-content p {
+      margin: 10px 0;
+      color: #555;
+      line-height: 1.5;
+    }
+    .btn-toggle, .btn-tooltip {
+      padding: 6px 12px;
+      margin-top: 10px;
+      background-color: #00b894;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+    .btn-toggle:hover, .btn-tooltip:hover {
+      background-color: #019875;
+    }
+    /* Стилі для підстатей */
+    .sub-articles {
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px dashed #ccc;
+      display: none;
+    }
+    .sub-article {
+      background: #f0f9f5;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .sub-article h3 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      color: #333;
+    }
+    .sub-article p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    /* Стилі для додаткових завдань */
+    .extra-assignments {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #eef9fc;
+      border-left: 4px solid #00b894;
+      border-radius: 4px;
+      display: none;
+    }
+    .extra-assignment {
+      margin-bottom: 10px;
+    }
+    .extra-assignment h3 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      color: #333;
+    }
+    .extra-assignment p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    /* Стилі для зносок з підказками */
+    .references {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .references ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+    .references li {
+      list-style: square;
+      margin-bottom: 5px;
+    }
+    /* Tooltip для посилань */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #00b894;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%; /* Розташування вище посилання */
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.85rem;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    /* Стилі для завдань */
+    .assignment {
+      background-color: #e7f7f1;
+      border-left: 4px solid #00b894;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .assignment strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    /* Адаптивність */
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 20px;
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 60px;
+        padding-right: 20px;
+        margin-bottom: 30px;
+      }
+      .timeline-item.left, .timeline-item.right {
+        left: 0;
+        text-align: left;
+      }
+      .timeline-item::after {
+        left: 8px;
+      }
+      .timeline-item::before {
+        left: 25px;
+        border: medium solid #00b894;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent #00b894 transparent transparent;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Курс копірайтингу: Самостійне написання статей</h1>
+    <p style="text-align:center; margin-bottom:30px;">
+      20 основних тем з корисними ресурсами, завданнями та 2 додатковими завданнями для написання портфоліо.
+    </p>
+
+    <div class="timeline">
+
+      <!-- 1. Вступ: Що таке копірайтинг? -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>1. Вступ: Що таке копірайтинг?</h2>
+          <p>
+            Короткий огляд професії копірайтера, основних напрямків роботи та перспектив розвитку.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://copyblogger.com/" target="_blank">Copyblogger</a>
+                  <span class="tooltiptext">Основні поняття та історія копірайтингу.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.hubspot.com/" target="_blank">HubSpot Blog</a>
+                  <span class="tooltiptext">Стратегії контент-маркетингу та кейси.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Історія копірайтингу: від друкарського верстата до цифрового контенту».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub1')">Показати підстатті</button>
+          <div class="sub-articles" id="sub1">
+            <div class="sub-article">
+              <h3>1.1. Історія копірайтингу</h3>
+              <p>Дослідіть історичний розвиток реклами та текстових стратегій. Напишіть коротку аналітичну статтю з прикладами.</p>
+            </div>
+            <div class="sub-article">
+              <h3>1.2. Ролі сучасного копірайтера</h3>
+              <p>Проаналізуйте сучасні ролі копірайтера в бізнесі і сформулюйте власну думку у вигляді статті.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra1')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra1">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Як знайти своє натхнення: секрети творчих людей». Використовуйте особисті приклади та дослідження.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Магія кольору: як вибір кольору може змінити настрій у дизайні». Розгляньте приклади з різних сфер.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Як знайти свою нішу -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>2. Як знайти свою нішу</h2>
+          <p>
+            Дослідження ринку та аналіз власних інтересів для визначення прибуткової ніші.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://moz.com/blog" target="_blank">Moz Blog</a>
+                  <span class="tooltiptext">SEO, аналітика та ринкові дослідження.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.nngroup.com/articles/" target="_blank">Nielsen Norman Group</a>
+                  <span class="tooltiptext">UX-дослідження та поведінка користувачів.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Як знайти свою нішу в інтернеті: дослідження ринку та особисті інтереси».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub2')">Показати підстатті</button>
+          <div class="sub-articles" id="sub2">
+            <div class="sub-article">
+              <h3>2.1. Аналіз ринку</h3>
+              <p>Опишіть методи виявлення трендів та попиту в різних нішах із використанням онлайн-інструментів.</p>
+            </div>
+            <div class="sub-article">
+              <h3>2.2. Визначення особистих інтересів</h3>
+              <p>Зіставте власні захоплення з потребами ринку та напишіть есе про можливості їх поєднання.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra2')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra2">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Подорожі як джерело креативу: як нові місця надихають на творчість». Наведіть приклади з особистого досвіду.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Творчі рутини: як творчі люди організовують свій день». Розгляньте як планування сприяє продуктивності.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Психологія реклами -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>3. Психологія реклами</h2>
+          <p>
+            Вивчення психологічних аспектів впливу на читача: тригери, емоції та нейромаркетинг.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.psychologytoday.com/" target="_blank">Psychology Today</a>
+                  <span class="tooltiptext">Психологічні дослідження впливу реклами.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://cxl.com/blog/" target="_blank">CXL Blog</a>
+                  <span class="tooltiptext">Кейси з підвищення конверсій через психологію.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Психологія реклами: як слова впливають на підсвідомість читача».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub3')">Показати підстатті</button>
+          <div class="sub-articles" id="sub3">
+            <div class="sub-article">
+              <h3>3.1. Емоційні тригери</h3>
+              <p>Проаналізуйте, як використовувати емоційні тригери у текстах, та напишіть практичний огляд.</p>
+            </div>
+            <div class="sub-article">
+              <h3>3.2. Нейромаркетинг у копірайтингу</h3>
+              <p>Використовуйте наукові дослідження для створення ефективного рекламного тексту і викладіть свої висновки.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra3')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra3">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Важливість неідеальних моментів у творчому процесі». Наведіть приклади з життя.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як візуалізація допомагає в досягненні творчих цілей». Використовуйте кейси та дослідження.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Сторітелінг -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>4. Сторітелінг</h2>
+          <p>
+            Вміння створювати захоплюючі історії для просування продуктів та ідей.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.storytellingwithdata.com/" target="_blank">Storytelling with Data</a>
+                  <span class="tooltiptext">Візуалізація даних через історії.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.udemy.com/topic/storytelling/" target="_blank">Udemy: Storytelling</a>
+                  <span class="tooltiptext">Курси з майстерності оповідання.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Сторітелінг у цифрову епоху: як розповідати історії, що продають».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub4')">Показати підстатті</button>
+          <div class="sub-articles" id="sub4">
+            <div class="sub-article">
+              <h3>4.1. Структура історії</h3>
+              <p>Опишіть основні елементи захоплюючої розповіді, використовуючи приклади з популярних брендів.</p>
+            </div>
+            <div class="sub-article">
+              <h3>4.2. Практичні вправи зі сторітелінгу</h3>
+              <p>Розробіть сценарій короткої історії для вигаданого продукту і викладіть його у статті.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra4')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra4">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Магія випадковостей: як несподіванки стають джерелом ідей». Використовуйте приклади з особистого досвіду.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як візуалізація допомагає в досягненні творчих цілей». Проілюструйте свої думки креативними прикладами.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. SEO-копірайтинг -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>5. SEO-копірайтинг</h2>
+          <p>
+            Оптимізація текстів під пошукові запити для забезпечення високої видимості.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://ahrefs.com/blog/" target="_blank">Ahrefs Blog</a>
+                  <span class="tooltiptext">Інструменти та стратегії SEO.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://semrush.com/blog/" target="_blank">SEMrush Blog</a>
+                  <span class="tooltiptext">Аналіз конкурентів та оптимізація тексту.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «SEO-копірайтинг: як поєднати креативність з оптимізацією».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub5')">Показати підстатті</button>
+          <div class="sub-articles" id="sub5">
+            <div class="sub-article">
+              <h3>5.1. Ключові слова в текстах</h3>
+              <p>Проведіть дослідження ключових слів і напишіть огляд їх використання у текстах.</p>
+            </div>
+            <div class="sub-article">
+              <h3>5.2. Технічні аспекти SEO</h3>
+              <p>Охарактеризуйте інструменти для SEO-аналітики та розкажіть про свій досвід їх застосування.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra5')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra5">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Магія кольору: як вибір кольору може змінити настрій у дизайні». Висвітліть психологію кольору.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Творчі рутини: як творчі люди організовують свій день». Покажіть приклади з реального життя.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Як писати заголовки -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>6. Як писати заголовки</h2>
+          <p>
+            Техніки створення ефектних заголовків, що привертають увагу з першого погляду.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.copyblogger.com/copywriting-101/" target="_blank">Copyblogger: Headlines</a>
+                  <span class="tooltiptext">Формули створення ефективних заголовків.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://neilpatel.com/blog/" target="_blank">Neil Patel Blog</a>
+                  <span class="tooltiptext">Поради щодо оптимізації заголовків.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Сила заголовків: як перше слово може змінити все», а також спробуйте створити 2 варіанти заголовків для статті «Робота в інтернеті».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub6')">Показати підстатті</button>
+          <div class="sub-articles" id="sub6">
+            <div class="sub-article">
+              <h3>6.1. Структури заголовків</h3>
+              <p>Огляд популярних шаблонів та структур для написання ефективних заголовків.</p>
+            </div>
+            <div class="sub-article">
+              <h3>6.2. Практичні вправи з заголовків</h3>
+              <p>Створіть 5 заголовків для різних тем і проаналізуйте їх ефективність.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra6')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra6">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Як розвивати креативне мислення за допомогою щоденних звичок». Використовуйте власний досвід.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як соціальні мережі змінюють наше ставлення до роботи». Розгляньте вплив платформи на особисту продуктивність.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Нейромаркетинг -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>7. Нейромаркетинг</h2>
+          <p>
+            Вивчення підсвідомих мотивів, які впливають на рішення споживача, та як це використовувати в текстах.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.neurosciencemarketing.com/blog/" target="_blank">Neuromarketing Blog</a>
+                  <span class="tooltiptext">Останні дослідження у нейромаркетингу.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.apa.org/pubs/journals/psp" target="_blank">APA Journals</a>
+                  <span class="tooltiptext">Наукові статті з психології.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Нейромаркетинг у копірайтингу: як підсвідомість впливає на вибір споживача».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub7')">Показати підстатті</button>
+          <div class="sub-articles" id="sub7">
+            <div class="sub-article">
+              <h3>7.1. Вплив слів на підсвідомість</h3>
+              <p>Розгляньте приклади використання психологічних тригерів у текстах та напишіть аналіз.</p>
+            </div>
+            <div class="sub-article">
+              <h3>7.2. Практичне застосування нейромаркетингу</h3>
+              <p>Створіть рекламний текст із застосуванням принципів нейромаркетингу та поясніть свій вибір.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra7')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra7">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Роль музики у творчому процесі: як композиція впливає на настрій». Використовуйте приклади з різних галузей.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як перетворити звичайний день на емоційну історію». Поділіться власним досвідом.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Рефреймінг -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>8. Рефреймінг</h2>
+          <p>
+            Техніка зміни точки зору, що допомагає переформулювати ідеї та залучати увагу.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://hbr.org/" target="_blank">Harvard Business Review</a>
+                  <span class="tooltiptext">Стратегії бізнес-мислення та інновацій.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.fastcompany.com/" target="_blank">FastCompany</a>
+                  <span class="tooltiptext">Кейси креативного мислення.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Рефреймінг в копірайтингу: як змінити погляд на звичні ідеї».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub8')">Показати підстатті</button>
+          <div class="sub-articles" id="sub8">
+            <div class="sub-article">
+              <h3>8.1. Техніка переформулювання</h3>
+              <p>Опишіть приклади переформулювання звичних тем для досягнення більшої ефективності.</p>
+            </div>
+            <div class="sub-article">
+              <h3>8.2. Приклади успішного рефреймінгу</h3>
+              <p>Аналізуйте кейси змін подачі ідей у відомих брендів.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra8')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra8">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Чому важливо дозволяти собі помилки в процесі творчості». Наведіть приклади та власні роздуми.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як натхнення з природи може змінити твій творчий підхід». Використовуйте опис конкретних місць.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Викликати емоції -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>9. Викликати емоції</h2>
+          <p>
+            Методи формування емоційного відгуку у читача, що спонукають до дії.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.marketingweek.com/" target="_blank">Marketing Week</a>
+                  <span class="tooltiptext">Аналіз емоційних кампаній.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://contentmarketinginstitute.com/" target="_blank">Content Marketing Institute</a>
+                  <span class="tooltiptext">Стратегії залучення аудиторії.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю на тему «Як викликати емоції в тексті: секрети, що працюють».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub9')">Показати підстатті</button>
+          <div class="sub-articles" id="sub9">
+            <div class="sub-article">
+              <h3>9.1. Емоційний дизайн тексту</h3>
+              <p>Створіть текст, де кожне речення викликає емоційний відгук, та поясніть свій підхід.</p>
+            </div>
+            <div class="sub-article">
+              <h3>9.2. Вправи з емоційного написання</h3>
+              <p>Запропонуйте декілька вправ для розвитку емоційного зв'язку з аудиторією та опишіть їх результати.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra9')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra9">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Емоції як джерело творчості: як використовувати почуття у роботі». Наведіть приклади.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Творчі перерви: як відпочинок може покращити результат роботи». Розгляньте особистий досвід.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Контент-план -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>10. Контент-план</h2>
+          <p>
+            Розробка стратегії публікацій для постійного розвитку бренду та підтримки аудиторії.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://coschedule.com/blog/" target="_blank">CoSchedule Blog</a>
+                  <span class="tooltiptext">Методики планування контенту.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.hubspot.com/marketing" target="_blank">HubSpot Marketing</a>
+                  <span class="tooltiptext">Інструменти контент-маркетингу.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Розробіть контент-план для блогу на тему «Робота в інтернеті: як побудувати онлайн кар'єру».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub10')">Показати підстатті</button>
+          <div class="sub-articles" id="sub10">
+            <div class="sub-article">
+              <h3>10.1. Структурування контент-плану</h3>
+              <p>Опишіть, як правильно розподілити теми та публікації протягом місяця.</p>
+            </div>
+            <div class="sub-article">
+              <h3>10.2. Моніторинг і аналіз ефективності</h3>
+              <p>Напишіть огляд інструментів для відстеження результатів публікацій.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra10')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra10">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Чи може творчість бути практичною? Як поєднувати функціональність і мистецтво». Висвітліть приклади з різних галузей.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як створити арт-проект на основі особистих переживань». Розкажіть про концепцію та реалізацію.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Редагування -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>11. Редагування</h2>
+          <p>
+            Важливість саморедагування та коректури тексту для досягнення високої якості.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.grammarly.com/blog/" target="_blank">Grammarly Blog</a>
+                  <span class="tooltiptext">Поради з граматики та стилю.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://prowritingaid.com/" target="_blank">ProWritingAid</a>
+                  <span class="tooltiptext">Інструменти для саморедагування.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Редагування: секрети вдосконалення тексту» з особистими порадами та прикладами.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub11')">Показати підстатті</button>
+          <div class="sub-articles" id="sub11">
+            <div class="sub-article">
+              <h3>11.1. Техніки коректури</h3>
+              <p>Опишіть власний досвід редагування та запропонуйте методи виявлення помилок.</p>
+            </div>
+            <div class="sub-article">
+              <h3>11.2. Редагування в різних жанрах</h3>
+              <p>Порівняйте особливості редагування рекламних та інформаційних текстів.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra11')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra11">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Техніка "stream of consciousness" у творчості: коли думки стають мистецтвом». Проаналізуйте приклади.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Роль сюрреалізму в сучасному мистецтві: як побачити більше, ніж здається». Розгляньте історичні та сучасні приклади.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Копірайтинг у соцмережах -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>12. Копірайтинг у соцмережах</h2>
+          <p>
+            Особливості написання коротких та ефективних текстів для платформ Facebook, Instagram, LinkedIn, TikTok та інших.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://later.com/blog/" target="_blank">Later Blog</a>
+                  <span class="tooltiptext">Поради для планування постів у соцмережах.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://sproutsocial.com/insights/" target="_blank">Sprout Social Insights</a>
+                  <span class="tooltiptext">Аналіз трендів у соціальних мережах.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Копірайтинг у соцмережах: як створити пост, що захоплює», використовуючи практичні приклади.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub12')">Показати підстатті</button>
+          <div class="sub-articles" id="sub12">
+            <div class="sub-article">
+              <h3>12.1. Контент для соцмереж</h3>
+              <p>Розробіть стратегію створення контенту для обраної соціальної платформи.</p>
+            </div>
+            <div class="sub-article">
+              <h3>12.2. Планування публікацій</h3>
+              <p>Напишіть план публікацій на тиждень для невеликого бренду або проекту.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra12')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra12">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Як соціальні мережі змінюють спосіб створення контенту». Розгляньте позитивні та негативні аспекти.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Створення сюрреалістичних образів у дизайні та мистецтві». Проаналізуйте приклади та тренди.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. E-mail розсилки -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>13. E-mail розсилки</h2>
+          <p>
+            Створення ефективних розсилок, що не потрапляють у спам та сприяють конверсії.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://mailchimp.com/resources/" target="_blank">Mailchimp Resources</a>
+                  <span class="tooltiptext">Гайди зі створення листів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.getresponse.com/blog" target="_blank">GetResponse Blog</a>
+                  <span class="tooltiptext">Поради для email-маркетингу.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «E-mail розсилки: як створити лист, що відкривається» із прикладами власних текстів.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub13')">Показати підстатті</button>
+          <div class="sub-articles" id="sub13">
+            <div class="sub-article">
+              <h3>13.1. Створення привабливих заголовків</h3>
+              <p>Поясніть, як створювати заголовки для розсилок, що привертають увагу.</p>
+            </div>
+            <div class="sub-article">
+              <h3>13.2. Сегментація аудиторії</h3>
+              <p>Охарактеризуйте методи сегментації аудиторії для підвищення відкриваності.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra13')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra13">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Як соціальні мережі змінюють наше сприйняття брендів». Використовуйте приклади та статистику.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Чому важливо підтримувати ментальне здоров’я на роботі». Розгляньте вплив емоцій на продуктивність.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Стиль бренду -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>14. Стиль бренду</h2>
+          <p>
+            Визначення унікального голосу бренду, що забезпечує його впізнаваність та послідовність.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.behance.net/" target="_blank">Behance</a>
+                  <span class="tooltiptext">Приклади брендбуків та дизайн-концепцій.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://99designs.com/blog/" target="_blank">99designs Blog</a>
+                  <span class="tooltiptext">Кейси з айдентики.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Стиль бренду: як створити унікальний голос для вашого бізнесу».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub14')">Показати підстатті</button>
+          <div class="sub-articles" id="sub14">
+            <div class="sub-article">
+              <h3>14.1. Розробка бренд-голосу</h3>
+              <p>Опишіть, як визначити і підтримувати унікальний голос бренду.</p>
+            </div>
+            <div class="sub-article">
+              <h3>14.2. Практичні завдання з айдентики</h3>
+              <p>Створіть концепцію бренд-голосу для вигаданого продукту.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra14')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra14">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Міфи про творчу натуру: чи всі творчі люди — ексцентричні?». Наведіть приклади з історії мистецтва.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як мистецтво допомагає нам зрозуміти суспільство». Проведіть аналіз впливу мистецтва на соціальні процеси.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. Технічний копірайтинг -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>15. Технічний копірайтинг</h2>
+          <p>
+            Написання простими словами складних технічних тем, створення документації та гайдів.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://developers.google.com/tech-writing" target="_blank">Google Tech Writing</a>
+                  <span class="tooltiptext">Рекомендації для технічних авторів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.writethedocs.org/guide/" target="_blank">Write the Docs</a>
+                  <span class="tooltiptext">Ресурс для розробників документації.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Технічний копірайтинг: як пояснити складне простими словами».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub15')">Показати підстатті</button>
+          <div class="sub-articles" id="sub15">
+            <div class="sub-article">
+              <h3>15.1. Структурування технічних текстів</h3>
+              <p>Розкажіть, як організувати інформацію у технічній статті.</p>
+            </div>
+            <div class="sub-article">
+              <h3>15.2. Практичні завдання з технічного написання</h3>
+              <p>Опишіть приклад документації для продукту або послуги.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra15')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra15">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Забуті техніки в мистецтві: як відродити старі методи у сучасному дизайні». Розгляньте історичні приклади.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Інновації в класичному мистецтві: як поєднати традиції з новаторством». Проаналізуйте сучасні тренди.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Фріланс vs агентство -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>16. Фріланс vs агентство</h2>
+          <p>
+            Порівняння форматів роботи копірайтера: переваги, недоліки, пошук клієнтів.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.upwork.com/" target="_blank">Upwork</a>
+                  <span class="tooltiptext">Фріланс-платформа для копірайтерів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.freelancer.com/" target="_blank">Freelancer.com</a>
+                  <span class="tooltiptext">Ресурс для пошуку замовлень.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Фріланс чи агентство: що краще для копірайтера?» з аналізом власних переваг.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub16')">Показати підстатті</button>
+          <div class="sub-articles" id="sub16">
+            <div class="sub-article">
+              <h3>16.1. Переваги фрілансу</h3>
+              <p>Опишіть, як організувати робочий час і знайти клієнтів на фрілансі.</p>
+            </div>
+            <div class="sub-article">
+              <h3>16.2. Робота в агентстві</h3>
+              <p>Розгляньте плюси та мінуси роботи в команді агентства.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra16')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra16">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Секрети успішного нетворкінгу для підприємців». Розгляньте власний досвід або дослідження.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Інтернет речей: як з'єднані пристрої змінюють наше повсякденне життя». Проаналізуйте приклади з технологій.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 17. Портфоліо -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>17. Портфоліо</h2>
+          <p>
+            Як створити вражаюче портфоліо, яке демонструє ваші навички та привертає клієнтів.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.clippings.me/" target="_blank">Clippings.me</a>
+                  <span class="tooltiptext">Інструмент для створення онлайн-портфоліо.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://medium.com/" target="_blank">Medium</a>
+                  <span class="tooltiptext">Платформа для публікації статей.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Як створити ефективне портфоліо копірайтера», в якій опишіть свої проекти та досвід.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub17')">Показати підстатті</button>
+          <div class="sub-articles" id="sub17">
+            <div class="sub-article">
+              <h3>17.1. Вибір робіт для портфоліо</h3>
+              <p>Оберіть приклади своїх кращих робіт та аргументуйте свій вибір.</p>
+            </div>
+            <div class="sub-article">
+              <h3>17.2. Оформлення портфоліо</h3>
+              <p>Опишіть структуру та дизайн, що сприяють залученню клієнтів.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra17')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra17">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Як мрії і бажання можуть стати основою для великих творчих проектів». Розгляньте особистий досвід.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Мистецтво створення креативних команд: як працювати разом над шедевром». Покажіть приклади успішних проектів.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18. Аналіз конкурентів -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>18. Аналіз конкурентів</h2>
+          <p>
+            Як досліджувати конкурентне середовище, використовувати помилки інших та виділятися серед схожих пропозицій.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://similarweb.com/" target="_blank">SimilarWeb</a>
+                  <span class="tooltiptext">Аналітика веб-трафіку та конкурентів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.semrush.com/analytics/" target="_blank">SEMrush Analytics</a>
+                  <span class="tooltiptext">Інструменти для аналізу конкурентного середовища.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Аналіз конкурентів: як виділитися на насиченому ринку» з використанням прикладів з власного досвіду.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub18')">Показати підстатті</button>
+          <div class="sub-articles" id="sub18">
+            <div class="sub-article">
+              <h3>18.1. Методи конкурентного аналізу</h3>
+              <p>Охарактеризуйте методи збору інформації про конкурентів.</p>
+            </div>
+            <div class="sub-article">
+              <h3>18.2. Практичні кейси</h3>
+              <p>Проаналізуйте кілька реальних прикладів конкурентного аналізу та викладіть свої висновки.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra18')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra18">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Важливість "тихого часу": як тишина сприяє креативному процесу». Висвітліть власний досвід.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Творчість у соціальних змінах: як художники можуть впливати на суспільство». Проаналізуйте сучасні приклади.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. Постійний розвиток -->
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>19. Постійний розвиток</h2>
+          <p>
+            Огляд ресурсів для безперервного навчання: книги, блоги, курси та спільноти для вдосконалення навичок.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.udemy.com/topic/copywriting/" target="_blank">Udemy: Copywriting</a>
+                  <span class="tooltiptext">Курси з копірайтингу для початківців та професіоналів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.skillshare.com/en/browse/copywriting" target="_blank">Skillshare</a>
+                  <span class="tooltiptext">Практичні завдання та проекти.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Постійний розвиток копірайтера: як навчатися і рости в професії».
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub19')">Показати підстатті</button>
+          <div class="sub-articles" id="sub19">
+            <div class="sub-article">
+              <h3>19.1. Рекомендована література</h3>
+              <p>Підбірка книг для саморозвитку в копірайтингу з коментарями.</p>
+            </div>
+            <div class="sub-article">
+              <h3>19.2. Онлайн-курси та спільноти</h3>
+              <p>Огляд платформ та спільнот для постійного навчання.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra19')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra19">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Змінюючи світ через дизайн: як ми можемо бути частиною змін через мистецтво». Використовуйте сучасні приклади.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як об'єднати моду та мистецтво: креативність на подіумі та в житті». Розгляньте вплив культурних трендів.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 20. Масштабування -->
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>20. Масштабування</h2>
+          <p>
+            Побудова власного бренду, створення агенції та делегування роботи для подальшого зростання.
+          </p>
+          <div class="references">
+            <strong>Корисні ресурси:</strong>
+            <ul>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.score.org/" target="_blank">SCORE</a>
+                  <span class="tooltiptext">Поради для малого бізнесу та стартапів.</span>
+                </span>
+              </li>
+              <li>
+                <span class="tooltip">
+                  <a href="https://www.forbes.com/entrepreneur/" target="_blank">Forbes: Entrepreneur</a>
+                  <span class="tooltiptext">Стратегії масштабування бізнесу.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="assignment">
+            <strong>Завдання:</strong>
+            Напишіть статтю «Масштабування копірайтингу: як вирости в бізнесі», розглянувши приклади власного досвіду чи кейс-стаді.
+          </div>
+          <button class="btn-toggle" onclick="toggleSubArticles('sub20')">Показати підстатті</button>
+          <div class="sub-articles" id="sub20">
+            <div class="sub-article">
+              <h3>20.1. Побудова бізнес-моделі</h3>
+              <p>Опишіть, як створити стійку модель для власної агенції чи бренду.</p>
+            </div>
+            <div class="sub-article">
+              <h3>20.2. Делегування та управління</h3>
+              <p>Розгляньте методи ефективного розподілу завдань у команді та поділіться своїм досвідом.</p>
+            </div>
+          </div>
+          <button class="btn-toggle" onclick="toggleExtraAssignments('extra20')">Показати додаткові завдання</button>
+          <div class="extra-assignments" id="extra20">
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 1</h3>
+              <p>Напишіть статтю «Мистецтво вуличного дизайну: як графіті та мурали перетворюють міста». Проаналізуйте приклади з різних міст.</p>
+            </div>
+            <div class="extra-assignment">
+              <h3>Додаткове завдання 2</h3>
+              <p>Напишіть статтю «Як розвивати креативне мислення за допомогою щоденних звичок». Поділіться власними техніками та порадами.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /timeline -->
+  </div> <!-- /container -->
+
+  <script>
+    function toggleSubArticles(id) {
+      var el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+    function toggleExtraAssignments(id) {
+      var el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
